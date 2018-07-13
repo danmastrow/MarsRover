@@ -5,9 +5,8 @@
     /// <summary>An interface for a Rover.</summary>
     public interface IRover
     {
-        /// <summary>Moves the specified distance.</summary>
-        /// <param name="distance">The distance.</param>
-        void Move(int distance);
+        /// <summary>Moves to the next node in the path.</summary>
+        void Move();
 
         /// <summary>Gets or sets the path.</summary>
         /// <value>The path.</value>

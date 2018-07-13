@@ -10,7 +10,8 @@
     {
         private static int plateuInitialX = 0;
         private static int plateuInitialY = 0;
-        private static int graphicsSizeMultiplier = 100;
+        private static int roverStartingMove = 0;
+        private static int graphicsScale = 10;
         private static int roverSize = 1;
         private static Color plateuColor = Color.Orange;
         private static Color roverColor = Color.OrangeRed;
@@ -33,17 +34,33 @@
             if (parsedFile.Count < 3 || parsedFile.Count % 2 == 0)
                 throw new Exception("InvalidFile - File must have an odd number of lines greater than or equal to 3.");
 
-
             // 2. Parse Plateu
+            IPlateu plateu = ParsePlateu(parsedFile);
+
+            // 3. Parse Rover and Paths
+            var rovers = ParseRovers(parsedFile);
+
+            // 4. Instantiate form with the parsed data.
+            var mainForm = new MainForm(plateu, rovers);
+
+            Application.Run(mainForm);
+        }
+
+        private static IPlateu ParsePlateu(IList<string> parsedFile)
+        {
             var plateuSizes = parsedFile[0].Split(' ');
+
             if (plateuSizes.Length > 3 || plateuSizes[0] != plateuSizes[1])
                 throw new Exception("InvalidFile - Plateu must have two values that are the same.");
 
-            var plateuSize = Int32.Parse(plateuSizes[0]) * graphicsSizeMultiplier;
+            var plateuSize = Int32.Parse(plateuSizes[0]) * graphicsScale;
 
-            IPlateu plateu = new Plateu(plateuInitialX * graphicsSizeMultiplier, plateuInitialY * graphicsSizeMultiplier, plateuSize, plateuColor);
+            IPlateu plateu = new Plateu(plateuInitialX * graphicsScale, plateuInitialY * graphicsScale, plateuSize, plateuColor);
+            return plateu;
+        }
 
-            // 3. Parse Rover and Paths
+        private static IList<IRover> ParseRovers(IList<string> parsedFile)
+        {
             IList<IRover> rovers = new List<IRover>();
 
             for (int i = 1; i < parsedFile.Count; i += 2)
@@ -54,21 +71,17 @@
                 // Even line is path.
 
                 var startingPosition = parsedFile[i].Split(' ');
-                var x = Int32.Parse(startingPosition[0].Trim()) * graphicsSizeMultiplier;
-                var y = Int32.Parse(startingPosition[1].Trim()) * graphicsSizeMultiplier;
+                var x = Int32.Parse(startingPosition[0].Trim()) * graphicsScale;
+                var y = Int32.Parse(startingPosition[1].Trim()) * graphicsScale;
                 var direction = (CardinalDirection)Enum.Parse(typeof(CardinalDirection), startingPosition[2]);
 
-                IPath path = new Path(parsedFile[i + 1]);
-                IRover rover = new Rover(x, y, roverSize * graphicsSizeMultiplier, roverColor, direction, roverTextColor, roverFont);
+                IPath path = new RoverPath(parsedFile[i + 1], roverStartingMove);
+                IRover rover = new Rover(x, y, roverSize * graphicsScale, roverColor, direction, roverTextColor, roverFont);
                 rover.Path = path;
                 rovers.Add(rover);
             }
 
-            // 4. Instantiate form with the parsed data.
-            var mainForm = new MainForm(plateu, rovers);
-
-            Application.Run(mainForm);
+            return rovers;
         }
-
     }
 }

@@ -24,20 +24,95 @@ namespace MarsRover
             this.DirectionFont = directionFont;
         }
 
-        /// <summary>Rotates the specified rotation.</summary>
-        /// <param name="rotation">The rotation.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        private void Rotate(RelativeRotation rotation)
+        /// <summary>Moves to the next node in the path depending on the CurrentMove.</summary>
+        public void Move()
         {
-            throw new NotImplementedException();
+            if (Path == null)
+                throw new Exception("Path cannot be null when moving.");
+
+            switch (Path.CurrentMove)
+            {
+                case RoverMove.L:
+                    // Change CardinalDirection anti clockwise.
+                    RotateLeft();
+                    break;
+                case RoverMove.R:
+                    // Change CardinalDirection clockwise.
+                    RotateRight();
+                    break;
+                case RoverMove.M:
+                    MoveForward();
+                    break;
+                default:
+                    break;
+            }
+            Path.MoveNext();
         }
 
-        /// <summary>Moves the specified distance.</summary>
-        /// <param name="distance">The distance.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public void Move(int distance)
+        private void MoveForward()
         {
-            //throw new NotImplementedException();
+            // Depending on the direction faced move appropriately.
+            switch (Direction)
+            {
+                case CardinalDirection.N:
+                    this.Y -= Size;
+
+                    break;
+                case CardinalDirection.E:
+                    this.X += Size;
+
+                    break;
+                case CardinalDirection.S:
+                    this.Y += Size;
+                    break;
+                case CardinalDirection.W:
+                    this.X -= Size;
+                    break;
+                default:
+                    throw new Exception("An unhandled CardinalDirection has been added.");
+            }
+        }
+
+        public void RotateRight()
+        {
+            switch (Direction)
+            {
+                case CardinalDirection.N:
+                    this.Direction = CardinalDirection.E;
+                    break;
+                case CardinalDirection.E:
+                    this.Direction = CardinalDirection.S;
+                    break;
+                case CardinalDirection.S:
+                    this.Direction = CardinalDirection.W;
+                    break;
+                case CardinalDirection.W:
+                    this.Direction = CardinalDirection.N;
+                    break;
+                default:
+                    throw new Exception("An unhandled CardinalDirection has been added.");
+            }
+        }
+
+        public void RotateLeft()
+        {
+            switch (Direction)
+            {
+                case CardinalDirection.N:
+                    this.Direction = CardinalDirection.W;
+                    break;
+                case CardinalDirection.E:
+                    this.Direction = CardinalDirection.N;
+                    break;
+                case CardinalDirection.S:
+                    this.Direction = CardinalDirection.E;
+                    break;
+                case CardinalDirection.W:
+                    this.Direction = CardinalDirection.S;
+                    break;
+                default:
+                    throw new Exception("An unhandled CardinalDirection has been added.");
+            }
         }
 
         /// <summary>Gets the point.</summary>

@@ -9,7 +9,6 @@
     public partial class MainForm : Form
     {
         private readonly int graphicsMultiplier = 100;
-        private readonly int animationInterval = 50;
         private IList<IRover> rovers;
         private IPlateu plateu;
         private IList<IPath> paths;
@@ -37,7 +36,7 @@
         {
             foreach (var rover in rovers)
             {
-                rover.Move(5);
+                rover.Move();
             }
 
             RefreshGraphics();
@@ -87,7 +86,16 @@
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            InitializeTimer(animationInterval);
+            foreach (var rover in rovers)
+            {
+                rover.Path.Reset();
+            }
+            InitializeTimer((int)animationSpeedInput.Value);
+        }
+
+        private void animationSpeedInput_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

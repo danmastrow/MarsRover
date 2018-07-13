@@ -61,7 +61,6 @@
     <Compile Include="Plateu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelativeRotation.cs" />
     <Compile Include="Rover.cs" />
     <Compile Include="RoverControl.cs" />
     <EmbeddedResource Include="MainForm.resx">
