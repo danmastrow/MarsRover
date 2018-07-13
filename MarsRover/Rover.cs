@@ -28,7 +28,13 @@ namespace MarsRover
             throw new NotImplementedException();
         }
 
+        public void Move(int distance)
+        {
+            throw new NotImplementedException();
+        }
+
         public Point Point { get { return new Point(X, Y); } }
+        public IPath Path { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
         public int Size { get; set; }
