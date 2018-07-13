@@ -29,24 +29,33 @@ namespace MarsRover
         {
             if (Path == null)
                 throw new Exception("Path cannot be null when moving.");
+            MoveNext();
+            if (Path.CanMoveNext())
+                Path.MoveNext();
+        }
 
-            switch (Path.CurrentMove)
+        private void MoveNext()
+        {
+            if (Path.CanMoveNext())
             {
-                case RoverMove.L:
-                    // Change CardinalDirection anti clockwise.
-                    RotateLeft();
-                    break;
-                case RoverMove.R:
-                    // Change CardinalDirection clockwise.
-                    RotateRight();
-                    break;
-                case RoverMove.M:
-                    MoveForward();
-                    break;
-                default:
-                    break;
+                switch (Path.CurrentMove)
+                {
+                    case RoverMove.L:
+                        // Change CardinalDirection anti clockwise.
+                        RotateLeft();
+                        break;
+                    case RoverMove.R:
+                        // Change CardinalDirection clockwise.
+                        RotateRight();
+                        break;
+                    case RoverMove.M:
+                        MoveForward();
+                        break;
+                    default:
+                        break;
+                }
+
             }
-            Path.MoveNext();
         }
 
         private void MoveForward()

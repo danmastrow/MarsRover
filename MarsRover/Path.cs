@@ -21,12 +21,14 @@ namespace MarsRover
             this.currentMove = startingMove;
         }
 
+        public bool CanMoveNext()
+        {
+            return (this.currentMove < roverControl.Count);
+        }
+
         public void MoveNext()
         {
-            if (currentMove != roverControl.Count - 1)
-            {
-                currentMove++;
-            }
+            currentMove++;
         }
 
         public void Reset()
@@ -47,16 +49,6 @@ namespace MarsRover
             {
                 return roverControl[currentMove];
             }
-
         }
-        public RoverMove FinalMove
-        {
-            get
-            {
-                return roverControl[roverControl.Count];
-            }
-
-        }
-
     }
 }
