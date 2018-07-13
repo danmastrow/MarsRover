@@ -8,10 +8,10 @@
 
     static class Program
     {
-        private static int plateuInitialX = 0;
-        private static int plateuInitialY = 0;
+        private static int plateuInitialX = 5;
+        private static int plateuInitialY = 5;
         private static int roverStartingMove = 0;
-        private static int graphicsScale = 10;
+        private static int graphicsScale = 50;
         private static int roverSize = 1;
         private static Color plateuColor = Color.Orange;
         private static Color roverColor = Color.OrangeRed;
@@ -76,7 +76,8 @@
                 var direction = (CardinalDirection)Enum.Parse(typeof(CardinalDirection), startingPosition[2]);
 
                 IPath path = new RoverPath(parsedFile[i + 1], roverStartingMove);
-                IRover rover = new Rover(x, y, roverSize * graphicsScale, roverColor, direction, roverTextColor, roverFont);
+                IRover rover = new Rover((x + plateuInitialX * graphicsScale), (y + plateuInitialY * graphicsScale),
+                            roverSize * graphicsScale, roverColor, direction, roverTextColor, roverFont);
                 rover.Path = path;
                 rovers.Add(rover);
             }
