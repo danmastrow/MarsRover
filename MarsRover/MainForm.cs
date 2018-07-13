@@ -4,13 +4,15 @@
     using System.Windows.Forms;
     using System;
     using System.Collections.Generic;
+    using System.Collections;
 
     public partial class MainForm : Form
     {
         private readonly int graphicsMultiplier = 100;
         private readonly int animationInterval = 50;
-        private IList<IRover> testRovers;
+        private IList<IRover> rovers;
         private IPlateu plateu;
+        private IList<IPath> paths;
         private Timer animationTimer;
 
 
@@ -19,32 +21,25 @@
             InitializeComponent();
         }
 
+        public MainForm(IPlateu plateu, IList<IRover> rovers)
+        {
+            this.plateu = plateu;
+            this.rovers = rovers;
+            InitializeComponent();
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // 1. Read and seperate File
-            Console.WriteLine("Parsing file");
-            // TODO: Implement parsing of file.
 
-            // 2. Parse size of the plateu.
-            var testPlateuSize = 5 * graphicsMultiplier;
-            plateu = new Plateu(100, 100, testPlateuSize, Color.Orange);
-            // 3. Parse Rovers
-            string[] testRoverInput = { "1 2 N", "3 E" };
-            testRovers = new List<IRover>()
-            {
-                new Rover(50, 50, 50, Color.Red, CardinalDirection.North, Color.Black, new Font("Arial",12)),
-                new Rover(400, 400, 50, Color.Red, CardinalDirection.West, Color.Black, new Font("Arial",12))
-            };
-
-            // 4. Parse each Rovers Path
-            string[] paths = { "LMLMLMLMM 3", "MMRMMRMRRM" };
-
-            // 5. Start animation timer.
-            InitializeTimer(animationInterval);
         }
 
         private void AnimationTick(object Sender, EventArgs e)
         {
+            foreach (var rover in rovers)
+            {
+                rover.Move(5);
+            }
+
             RefreshGraphics();
             DrawPlateu();
             DrawRovers();
@@ -61,7 +56,7 @@
         private void DrawRovers()
         {
             Graphics formGraphics = this.CreateGraphics();
-            foreach (var rover in testRovers)
+            foreach (var rover in rovers)
             {
                 var rectBrush = new SolidBrush(rover.Color);
                 var stringBrush = new SolidBrush(rover.DirectionColor);
@@ -75,7 +70,6 @@
             }
             formGraphics.Dispose();
         }
-
 
         private void InitializeTimer(int interval)
         {
@@ -91,5 +85,9 @@
             formGraphics.Clear(Color.White);
         }
 
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            InitializeTimer(animationInterval);
+        }
     }
 }
