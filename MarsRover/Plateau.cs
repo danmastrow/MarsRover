@@ -3,15 +3,15 @@
     using System.Drawing;
 
     /// <summary>Represents the squared Plateu.</summary>
-    /// <seealso cref="MarsRover.IPlateu" />
-    public class Plateu : IPlateu
+    /// <seealso cref="MarsRover.IPlateau" />
+    public class Plateau : IPlateau
     {
-        /// <summary>Initializes a new instance of the <see cref="Plateu"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="Plateau"/> class.</summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="size">The size.</param>
         /// <param name="color">The color.</param>
-        public Plateu(int x, int y, int size, Color color)
+        public Plateau(int x, int y, int size, Color color)
         {
             this.X = x;
             this.Y = y;

@@ -2,8 +2,8 @@
 {
     using System.Drawing;
 
-    /// <summary>Represents an interface for a perfectly square Plateu.</summary>
-    public interface IPlateu
+    /// <summary>Represents an interface for a perfectly square Plateau.</summary>
+    public interface IPlateau
     {
         /// <summary>Gets or sets the x.</summary>
         /// <value>The x.</value>
