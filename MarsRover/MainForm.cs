@@ -31,10 +31,13 @@
 
         }
 
-        public MainForm(IPlateauParser plateauParser, IRoverParser roverParser)
+        public MainForm(IPlateauParser plateauParser, IRoverParser roverParser, Timer animationTimer)
         {
             this.plateauParser = plateauParser;
             this.roverParser = roverParser;
+            this.animationTimer = animationTimer;
+
+            animationTimer.Tick += AnimationTick;
             InitializeComponent();
         }
 
@@ -55,25 +58,23 @@
             {
                 rover.Move();
             }
-
-            ResetCanvas();
-            DrawPlateau();
-            DrawRovers();
+            Graphics formGraphics = this.CreateGraphics();
+            ResetCanvas(formGraphics);
+            DrawPlateau(formGraphics);
+            DrawRovers(formGraphics);
         }
 
         /// <summary>Draws the plateau.</summary>
-        private void DrawPlateau()
+        private void DrawPlateau(Graphics formGraphics)
         {
-            Graphics formGraphics = this.CreateGraphics();
             var brush = new SolidBrush(plateau.Color);
             var rect = new Rectangle(plateau.X, plateau.Y, plateau.Size, plateau.Size);
             formGraphics.FillRectangle(brush, rect);
         }
 
         /// <summary>Draws the rovers.</summary>
-        private void DrawRovers()
+        private void DrawRovers(Graphics formGraphics)
         {
-            Graphics formGraphics = this.CreateGraphics();
             foreach (var rover in rovers)
             {
                 var rectBrush = new SolidBrush(rover.Color);
@@ -93,16 +94,14 @@
         /// <param name="tickInterval">The interval to tick.</param>
         private void InitializeTimer(int tickInterval)
         {
-            animationTimer = new Timer();
+            animationTimer.Dispose();
             animationTimer.Interval = tickInterval;
-            animationTimer.Tick += AnimationTick;
             animationTimer.Enabled = true;
         }
 
         /// <summary>Clears the form.</summary>
-        private void ResetCanvas()
+        private void ResetCanvas(Graphics formGraphics)
         {
-            Graphics formGraphics = this.CreateGraphics();
             formGraphics.Clear(Color.White);
         }
 
